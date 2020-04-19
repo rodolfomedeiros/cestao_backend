@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+  wsl-pg:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: "123"
+    ports:
+      - "15432:5432"
+    volumes:
+      - $HOME/docker/volumes/postgresql:/var/lib/postgresql/data 
+    networks:
+      - pg-network
+      
+  wsl-pgadmin4:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "teste@teste.com"
+      PGADMIN_DEFAULT_PASSWORD: "123"
+    ports:
+      - "16543:80"
+    depends_on:
+      - wsl-pg
+    networks:
+      - pg-network
+
+networks: 
+  pg-network:
+    driver: bridge

@@ -1,21 +1,34 @@
 package com.devroods.cestao_backend.controllers;
 
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import com.devroods.cestao_backend.models.NotaFiscal;
+import java.util.Optional;
 
+import com.devroods.cestao_backend.components.NfceFormInfoExtractComponent;
+import com.devroods.cestao_backend.models.forms.NfceForm;
+import com.devroods.cestao_backend.models.users.Business;
+import com.devroods.cestao_backend.models.users.Person;
+import com.devroods.cestao_backend.repositories.PersonRepository;
+import com.devroods.cestao_backend.services.GetNFCeService;
+
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+@RestController
+@RequestMapping("/notas")
+public class NotaController {
 
-// @RestController
-// @RequestMapping("/notas")
-public class NotaController{
-  
-  @PutMapping(value="/{id}")
-  public NotaFiscal putMethodName(@PathVariable String id, @RequestBody NotaFiscal entity) {
-      //TODO: process PUT request
-      
-      return entity;
+  private final NfceFormInfoExtractComponent nfceFormInfoExtractComponent;
+
+  public NotaController(
+    NfceFormInfoExtractComponent nfceFormInfoExtractComponent
+  ){
+    this.nfceFormInfoExtractComponent = nfceFormInfoExtractComponent;
+  };
+
+  @GetMapping(value = "/{nfceKey}")
+  public NfceForm insertNotaFiscal(@PathVariable final String nfceKey) {    
+    return nfceFormInfoExtractComponent.init(nfceKey);
   }
 }
