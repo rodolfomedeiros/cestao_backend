@@ -181,7 +181,7 @@ public class NfceForm {
   public Person getPerson() {
     Person p = new Person();
 
-    p.setCpf(this.getCpfDestinatario());
+    p.setCpf(this.getCpfDestinatario() == null ? "000.000.000-00" : this.getCpfDestinatario());
 
     return p;
   }

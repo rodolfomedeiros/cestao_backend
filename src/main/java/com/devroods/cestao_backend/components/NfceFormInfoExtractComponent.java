@@ -1,15 +1,19 @@
 package com.devroods.cestao_backend.components;
 
 import java.util.List;
+import java.util.Optional;
 
+import com.devroods.cestao_backend.models.Item;
 import com.devroods.cestao_backend.models.Nfce;
 import com.devroods.cestao_backend.models.SoldItem;
 import com.devroods.cestao_backend.models.forms.NfceForm;
 import com.devroods.cestao_backend.models.users.Business;
 import com.devroods.cestao_backend.models.users.Person;
 import com.devroods.cestao_backend.repositories.BusinessRepository;
+import com.devroods.cestao_backend.repositories.ItemRepository;
 import com.devroods.cestao_backend.repositories.NfceRepository;
 import com.devroods.cestao_backend.repositories.PersonRepository;
+import com.devroods.cestao_backend.repositories.SoldItemRepository;
 import com.devroods.cestao_backend.services.GetNFCeService;
 
 import org.springframework.stereotype.Component;
@@ -20,6 +24,8 @@ public class NfceFormInfoExtractComponent {
   private final PersonRepository personRepository;
   private final BusinessRepository businessRepository;
   private final NfceRepository nfceRepository;
+  private final SoldItemRepository soldItemRepository;
+  private final ItemRepository itemRepository;
 
   private final GetNFCeService getNFCeService;
 
@@ -27,12 +33,16 @@ public class NfceFormInfoExtractComponent {
     PersonRepository personRepository,
     BusinessRepository businessRepository,
     NfceRepository nfceRepository,
+    SoldItemRepository soldItemRepository,
+    ItemRepository itemRepository,
     
     GetNFCeService getNFCeService
   ){
     this.personRepository = personRepository;
     this.businessRepository = businessRepository;
     this.nfceRepository = nfceRepository;
+    this.soldItemRepository = soldItemRepository;
+    this.itemRepository = itemRepository;
 
     this.getNFCeService = getNFCeService;
   }
@@ -50,28 +60,53 @@ public class NfceFormInfoExtractComponent {
     Nfce nfceF = this.verifyAndSaveNfce(nfce);
     
     List<SoldItem> soldItems = nfceForm.getSoldItems();
-    soldItems.stream().map(item -> {return item.setNfce(nfceF);});
+    soldItems.stream().forEach(soldItem -> {
+      soldItem = this.verifyAndSaveItemOfSoldItem(soldItem);
 
-    System.out.println(pF.toString());
-    System.out.println(bF.toString());
-    System.out.println(nfceF.toString());
+      soldItem.setNfce(nfce);
+    });
+
+    //System.out.println(pF.toString());
+    //System.out.println(bF.toString());
+    //System.out.println(nfceF.toString());
+    soldItems.stream().forEach(soldItem -> {
+      System.out.println(soldItem.toString());
+    });
 
     return nfceForm;
   }
 
-  private Person verifyAndSavePerson(Person person) {
+  public Person verifyAndSavePerson(Person person) {
     return personRepository.findByCpf(person.getCpf())
       .orElse(personRepository.save(person));
   }
 
-  private Business verifyAndSaveBusiness(Business business){
+  public Business verifyAndSaveBusiness(Business business){
     return businessRepository.findByCnpj(business.getCnpj())
       .orElse(businessRepository.save(business));
   }
 
-  private Nfce verifyAndSaveNfce(Nfce nfce) {
+  public Nfce verifyAndSaveNfce(Nfce nfce) {
     return nfceRepository.findByKey(nfce.getKey())
     .orElse(nfceRepository.save(nfce));
+  }
+
+  public SoldItem verifyAndSaveItemOfSoldItem(SoldItem soldItem){
+    Optional<SoldItem> soldItemOld = soldItemRepository.findByResume(soldItem.getResume());
+
+    if(soldItemOld.isPresent()){
+      soldItem.setItem(soldItemOld.get().getItem());
+    } else {
+      // @TODO
+      Item newItem = new Item();
+
+      newItem.setName(soldItem.getResume());
+
+      newItem = itemRepository.save(newItem);
+      soldItem.setItem(newItem);
+    }
+
+    return soldItem;
   }
 
 }

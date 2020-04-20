@@ -23,7 +23,7 @@ public class Item {
   private String name;
 
   @OneToMany(mappedBy = "item")
-  private List<ItemResume> resumes;
+  private List<SoldItem> soldItems;
   @ManyToOne
   private Business business;
   
@@ -39,11 +39,11 @@ public class Item {
   @Size(min = 13, max = 13)
   private String barCode;
 
-  public Item(int id, String name, List<ItemResume> resumes, Business business, String stamp, String describe,
+  public Item(int id, String name, List<SoldItem> soldItems, Business business, String stamp, String describe,
       String weight, String unitType, String category, String imgLink, @Size(min = 13, max = 13) String barCode) {
     this.id = id;
     this.name = name;
-    this.resumes = resumes;
+    this.soldItems = soldItems;
     this.business = business;
     this.stamp = stamp;
     this.describe = describe;
@@ -72,12 +72,12 @@ public class Item {
     this.name = name;
   }
 
-  public List<ItemResume> getResumes() {
-    return resumes;
+  public List<SoldItem> getResumes() {
+    return soldItems;
   }
 
-  public void setResumes(List<ItemResume> resumes) {
-    this.resumes = resumes;
+  public void setResumes(List<SoldItem> soldItems) {
+    this.soldItems = soldItems;
   }
 
   public Business getBusiness() {
@@ -143,4 +143,12 @@ public class Item {
   public void setBarCode(String barCode) {
     this.barCode = barCode;
   }
+
+  @Override
+  public String toString() {
+    return "Item [barCode=" + barCode + ", business=" + business + ", category=" + category + ", describe=" + describe
+        + ", id=" + id + ", imgLink=" + imgLink + ", name=" + name + ", soldItems=" + soldItems + ", stamp=" + stamp
+        + ", unitType=" + unitType + ", weight=" + weight + "]";
+  }
+
 }
