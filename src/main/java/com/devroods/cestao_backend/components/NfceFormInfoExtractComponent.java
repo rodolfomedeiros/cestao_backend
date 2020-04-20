@@ -1,6 +1,9 @@
 package com.devroods.cestao_backend.components;
 
+import java.util.List;
+
 import com.devroods.cestao_backend.models.Nfce;
+import com.devroods.cestao_backend.models.SoldItem;
 import com.devroods.cestao_backend.models.forms.NfceForm;
 import com.devroods.cestao_backend.models.users.Business;
 import com.devroods.cestao_backend.models.users.Person;
@@ -46,6 +49,9 @@ public class NfceFormInfoExtractComponent {
     nfce.setPerson(pF);
     Nfce nfceF = this.verifyAndSaveNfce(nfce);
     
+    List<SoldItem> soldItems = nfceForm.getSoldItems();
+    soldItems.stream().map(item -> {return item.setNfce(nfceF);});
+
     System.out.println(pF.toString());
     System.out.println(bF.toString());
     System.out.println(nfceF.toString());

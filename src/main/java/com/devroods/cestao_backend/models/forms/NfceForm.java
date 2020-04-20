@@ -1,8 +1,11 @@
 package com.devroods.cestao_backend.models.forms;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import com.devroods.cestao_backend.models.Nfce;
+import com.devroods.cestao_backend.models.SoldItem;
 import com.devroods.cestao_backend.models.users.Business;
 import com.devroods.cestao_backend.models.users.Person;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -208,5 +211,23 @@ public class NfceForm {
     nfce.setTotalPrice(Double.parseDouble(this.getValorTotal().replace(",", ".")));
 
     return nfce;
+  }
+
+  public List<SoldItem> getSoldItems(){
+    List<SoldItem> soldItems = new ArrayList<SoldItem>();
+
+    for (String[] arr : getItems()) {
+      SoldItem soldItem = new SoldItem();
+
+      soldItem.setAmount(Double.parseDouble(arr[2].replace(",", ".")));
+      soldItem.setPrice(Double.parseDouble(arr[4].replace(",", ".")));
+      soldItem.setResume(arr[1]);
+      soldItem.setTotalPrice(Double.parseDouble(arr[5].replace(",", ".")));
+      soldItem.setUnitType(arr[3]);
+
+      soldItems.add(soldItem);
+    }
+
+    return soldItems;
   }
 }
