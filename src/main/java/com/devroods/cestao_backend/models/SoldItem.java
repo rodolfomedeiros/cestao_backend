@@ -6,6 +6,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class SoldItem {
@@ -16,11 +17,11 @@ public class SoldItem {
 
   @NotBlank
   private String resume;
-  @NotBlank
+  @NotNull
   private double price;
-  @NotBlank
+  @NotNull
   private double totalPrice;
-  @NotBlank
+  @NotNull
   private double amount;
   @NotBlank
   private String unitType;

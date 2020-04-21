@@ -25,7 +25,6 @@ public class NfceFormInfoExtractComponent {
   private final BusinessRepository businessRepository;
   private final NfceRepository nfceRepository;
   private final SoldItemRepository soldItemRepository;
-  private final ItemRepository itemRepository;
 
   private final GetNFCeService getNFCeService;
 
@@ -34,7 +33,6 @@ public class NfceFormInfoExtractComponent {
     BusinessRepository businessRepository,
     NfceRepository nfceRepository,
     SoldItemRepository soldItemRepository,
-    ItemRepository itemRepository,
     
     GetNFCeService getNFCeService
   ){
@@ -42,7 +40,6 @@ public class NfceFormInfoExtractComponent {
     this.businessRepository = businessRepository;
     this.nfceRepository = nfceRepository;
     this.soldItemRepository = soldItemRepository;
-    this.itemRepository = itemRepository;
 
     this.getNFCeService = getNFCeService;
   }
@@ -61,18 +58,10 @@ public class NfceFormInfoExtractComponent {
     
     List<SoldItem> soldItems = nfceForm.getSoldItems();
     soldItems.stream().forEach(soldItem -> {
-      soldItem = this.verifyAndSaveItemOfSoldItem(soldItem);
-
-      soldItem.setNfce(nfce);
+      soldItem.setNfce(nfceF);
+      soldItem = this.verifyExistsItemToSoldItemAndSave(soldItem);
     });
-
-    //System.out.println(pF.toString());
-    //System.out.println(bF.toString());
-    //System.out.println(nfceF.toString());
-    soldItems.stream().forEach(soldItem -> {
-      System.out.println(soldItem.toString());
-    });
-
+    
     return nfceForm;
   }
 
@@ -91,22 +80,14 @@ public class NfceFormInfoExtractComponent {
     .orElse(nfceRepository.save(nfce));
   }
 
-  public SoldItem verifyAndSaveItemOfSoldItem(SoldItem soldItem){
+  public SoldItem verifyExistsItemToSoldItemAndSave(SoldItem soldItem){
     Optional<SoldItem> soldItemOld = soldItemRepository.findByResume(soldItem.getResume());
 
     if(soldItemOld.isPresent()){
       soldItem.setItem(soldItemOld.get().getItem());
-    } else {
-      // @TODO
-      Item newItem = new Item();
-
-      newItem.setName(soldItem.getResume());
-
-      newItem = itemRepository.save(newItem);
-      soldItem.setItem(newItem);
     }
 
-    return soldItem;
+    return soldItemRepository.save(soldItem);
   }
 
 }

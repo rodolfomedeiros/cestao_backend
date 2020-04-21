@@ -9,7 +9,7 @@ import javax.persistence.MappedSuperclass;
 public class User {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @GeneratedValue(strategy = GenerationType.AUTO)
   public int id;
 
   protected String name;
