@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 @RestController
-@RequestMapping("/notas")
+@RequestMapping("/nfce")
 public class NotaController {
 
   private final NfceFormInfoExtractComponent nfceFormInfoExtractComponent;
@@ -22,7 +22,8 @@ public class NotaController {
   };
 
   @GetMapping(value = "/{nfceKey}")
-  public NfceForm insertNotaFiscal(@PathVariable final String nfceKey) {    
-    return nfceFormInfoExtractComponent.init(nfceKey);
+  public NfceForm getNfce(@PathVariable final String nfceKey) {    
+    return nfceFormInfoExtractComponent.start(nfceKey);
   }
+
 }

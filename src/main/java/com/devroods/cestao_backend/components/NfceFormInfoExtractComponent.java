@@ -3,14 +3,12 @@ package com.devroods.cestao_backend.components;
 import java.util.List;
 import java.util.Optional;
 
-import com.devroods.cestao_backend.models.Item;
 import com.devroods.cestao_backend.models.Nfce;
 import com.devroods.cestao_backend.models.SoldItem;
 import com.devroods.cestao_backend.models.forms.NfceForm;
 import com.devroods.cestao_backend.models.users.Business;
 import com.devroods.cestao_backend.models.users.Person;
 import com.devroods.cestao_backend.repositories.BusinessRepository;
-import com.devroods.cestao_backend.repositories.ItemRepository;
 import com.devroods.cestao_backend.repositories.NfceRepository;
 import com.devroods.cestao_backend.repositories.PersonRepository;
 import com.devroods.cestao_backend.repositories.SoldItemRepository;
@@ -44,9 +42,10 @@ public class NfceFormInfoExtractComponent {
     this.getNFCeService = getNFCeService;
   }
 
-  public NfceForm init(String key) {
+  public NfceForm start(String key) {
 
-    NfceForm nfceForm = getNFCeService.getNfce(key).orElseThrow();
+    //NfceForm nfceForm = getNFCeService.getNfceForm(key).orElseThrow();
+    NfceForm nfceForm = getNFCeService.getDefaultNfceForm().orElseThrow();
 
     Person pF = this.verifyAndSavePerson(nfceForm.getPerson());
     Business bF = this.verifyAndSaveBusiness(nfceForm.getBusiness());

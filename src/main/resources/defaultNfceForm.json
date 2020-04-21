@@ -1,0 +1,98 @@
+{
+  "emitente": "Hiper Queiroz Ltda",
+  "cnpjEmitente": "10.670.811/0010-44",
+  "ieEmitente": "20.507.987-3",
+  "endEmitente": "RUA JOAO PESSOA, 836, CENTRO, ASSU, RN, 59650-000",
+  "cpfDestinatario": "093.318.444-17",
+  "valorTotal": "39,52",
+  "valorDesconto": "0,00",
+  "valorPago": "39,52",
+  "formaPag": "Cartão de Crédito",
+  "items": [
+    [
+      "001",
+      "SALG PIPPOS CHURRASCO 200G",
+      "1,0",
+      "UN",
+      "5,29",
+      "5,29"
+    ],
+    [
+      "002",
+      "CHOC EM PO PREDILECTA 200G",
+      "1,0",
+      "UN",
+      "5,98",
+      "5,98"
+    ],
+    [
+      "003",
+      "LEITE COND PIRACANJUBA 395G",
+      "1,0",
+      "UN",
+      "3,29",
+      "3,29"
+    ],
+    [
+      "004",
+      "BISC C CRACKER FORTALEZA 400G TRADICIONA",
+      "1,0",
+      "UN",
+      "3,68",
+      "3,68"
+    ],
+    [
+      "005",
+      "CREME LEITE ITALAC 200G",
+      "1,0",
+      "UN",
+      "1,69",
+      "1,69"
+    ],
+    [
+      "006",
+      "CEREAL BARRA RITTER 25G LIGHT CASTANHA P",
+      "1,0",
+      "UN",
+      "1,49",
+      "1,49"
+    ],
+    [
+      "007",
+      "PAO SAO FRANCISCO KG FORMA",
+      "0,436",
+      "KG",
+      "9,49",
+      "4,14"
+    ],
+    [
+      "008",
+      "QUEIJO NATVILLE KG MUSSARELA",
+      "0,252",
+      "KG",
+      "21,88",
+      "5,51"
+    ],
+    [
+      "009",
+      "PRESUNTO SEARA KG MAGRO OVAL COZIDO",
+      "0,198",
+      "KG",
+      "18,98",
+      "3,76"
+    ],
+    [
+      "010",
+      "BISC MAIZENA FORTALEZA 400G TRAD",
+      "1,0",
+      "UN",
+      "4,69",
+      "4,69"
+    ]
+  ],
+  "chave": "24200210670811001044651010000360479291169643",
+  "dataEmissao": "03/02/2020 20:00:16",
+  "dataAutorizacao": "03/02/2020 20:17:53",
+  "protocolo": "324200031632964",
+  "situacao": "Autorizada"
+}
