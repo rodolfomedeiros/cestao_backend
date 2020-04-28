@@ -12,6 +12,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface SoldItemRepository extends CrudRepository<SoldItem, Long>{
 
-  public Optional<SoldItem> findByResume(String resume);
+  public Optional<SoldItem> findFirstByResume(String resume);
   public Optional<List<SoldItem>> findAllByItem(Item Item);
 }
