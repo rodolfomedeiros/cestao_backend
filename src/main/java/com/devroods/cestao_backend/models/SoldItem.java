@@ -8,6 +8,8 @@ import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class SoldItem {
 
@@ -27,8 +29,10 @@ public class SoldItem {
   private String unitType;
   
   @ManyToOne
+  @JsonIgnore
   private Nfce nfce;
   @ManyToOne
+  @JsonIgnore
   private Item item;
 
   public SoldItem(){}

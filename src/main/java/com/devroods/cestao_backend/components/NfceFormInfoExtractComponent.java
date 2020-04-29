@@ -3,8 +3,6 @@ package com.devroods.cestao_backend.components;
 import java.util.List;
 import java.util.Optional;
 
-import javax.transaction.Transactional;
-
 import com.devroods.cestao_backend.models.Nfce;
 import com.devroods.cestao_backend.models.SoldItem;
 import com.devroods.cestao_backend.models.forms.NfceForm;
@@ -15,9 +13,7 @@ import com.devroods.cestao_backend.repositories.NfceRepository;
 import com.devroods.cestao_backend.repositories.PersonRepository;
 import com.devroods.cestao_backend.repositories.SoldItemRepository;
 import com.devroods.cestao_backend.services.GetNFCeService;
-import com.fasterxml.jackson.databind.ser.std.StdKeySerializers.Default;
 
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -44,6 +40,8 @@ public class NfceFormInfoExtractComponent {
 
   public boolean fetch(String key) {
 
+    if(nfceRepository.existsByKey(key)) return false;
+
     // NfceForm nfceForm = getNFCeService.getNfceForm(key).orElseThrow();
     NfceForm nfceForm = getNFCeService.getDefaultNfceForm().orElseThrow();
 
@@ -64,10 +62,10 @@ public class NfceFormInfoExtractComponent {
       });
 
       return true;
-    } catch (DataIntegrityViolationException ex) {
+    } catch (Exception ex) {
       System.out.println(ex.getMessage());
     }
-
+    
     return false;
   }
 
@@ -80,7 +78,11 @@ public class NfceFormInfoExtractComponent {
     return businessRepository.findByCnpj(business.getCnpj()).orElseGet(() -> businessRepository.save(business));
   }
 
-  public Nfce verifyAndSaveNfce(Nfce nfce) throws RuntimeException {
+  public Nfce verifyAndSaveNfce(Nfce nfce) throws Exception {
+
+    if (nfceRepository.existsByKey(nfce.getKey()))
+      throw new Exception("Nfce já existe! Key: "+ nfce.getKey());
+
     return nfceRepository.save(nfce);
   }
 

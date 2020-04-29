@@ -14,4 +14,5 @@ public interface SoldItemRepository extends CrudRepository<SoldItem, Long>{
 
   public Optional<SoldItem> findFirstByResume(String resume);
   public Optional<List<SoldItem>> findAllByItem(Item Item);
+  public Optional<List<SoldItem>> findByResumeIsContainingIgnoreCase(String query);
 }

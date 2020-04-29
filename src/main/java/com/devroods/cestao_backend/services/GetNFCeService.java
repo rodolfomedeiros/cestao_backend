@@ -1,9 +1,7 @@
 package com.devroods.cestao_backend.services;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.nio.file.Paths;
 import java.util.Optional;
 
 import com.devroods.cestao_backend.models.forms.NfceForm;
@@ -19,7 +17,7 @@ public class GetNFCeService {
 
   private final RestTemplate restTemplate;
 
-  private final String urlNotaFiscal = "http://localhost:3000/nota?nfceKey=";
+  private final String urlNotaFiscal = "http://172.18.0.2:3000/nota?nfceKey=";
 
   public GetNFCeService(RestTemplateBuilder restTemplateBuilder) {
     this.restTemplate = restTemplateBuilder.build();

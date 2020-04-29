@@ -56,6 +56,10 @@ public class Item {
 
   public Item() {}
 
+  public Item(List<SoldItem> soldItems) {
+    this.soldItems = soldItems;
+  }
+
   public int getId() {
     return id;
   }

@@ -12,4 +12,6 @@ public interface NfceRepository extends CrudRepository<Nfce, Long>{
 
 	Optional<Nfce> findByKey(String key);
 
+	boolean existsByKey(String key);
+
 }
