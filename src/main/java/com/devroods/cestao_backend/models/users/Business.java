@@ -11,7 +11,7 @@ import javax.validation.constraints.Size;
 import com.devroods.cestao_backend.models.Item;
 
 @Entity
-public class Business extends User{
+public class Business extends User {
   
   @NotBlank
   @Column(unique = true)

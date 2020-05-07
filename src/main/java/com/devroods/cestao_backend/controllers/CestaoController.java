@@ -27,7 +27,8 @@ public class CestaoController {
   public SearchItemsForm getInfoBySearch(
     @Valid @RequestParam(required = true) String query) {
       
-      List<SoldItem> soldItems = soldItemRepository.findByResumeIsContainingIgnoreCase(query).orElse(null);
+      List<SoldItem> soldItems = soldItemRepository
+        .findByResumeIsContainingIgnoreCase(query).orElse(null);
 
       return new SearchItemsForm(query, soldItems);
   }
