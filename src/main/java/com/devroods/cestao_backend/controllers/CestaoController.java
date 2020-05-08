@@ -8,6 +8,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import com.devroods.cestao_backend.models.LastSingleSoldItem;
+import com.devroods.cestao_backend.models.factories.SearchItemsFactory;
 import com.devroods.cestao_backend.models.forms.SearchItemsDTO;
 import com.devroods.cestao_backend.repositories.LastSingleSoldItemRepository;
 
@@ -27,10 +28,10 @@ public class CestaoController {
   public SearchItemsDTO getInfoBySearch(
     @Valid @RequestParam(required = true) String query) {
       
-      List<LastSingleSoldItem> soldItems = lastSingleSoldItemRepository
+      List<LastSingleSoldItem> lastSingleSoldItems = lastSingleSoldItemRepository
         .findAllByResumeIsContainingIgnoreCase(query).orElse(null);
 
-      return new SearchItemsDTO(query, soldItems);
+      return new SearchItemsFactory(query, lastSingleSoldItems).created();
   }
   
 }

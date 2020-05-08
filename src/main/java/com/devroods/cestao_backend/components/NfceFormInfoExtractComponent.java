@@ -143,5 +143,4 @@ public class NfceFormInfoExtractComponent {
       soldItem.getNfce().getBusiness())
     ));
   }
-
 }

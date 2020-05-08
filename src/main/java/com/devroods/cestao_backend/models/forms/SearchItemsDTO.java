@@ -2,16 +2,16 @@ package com.devroods.cestao_backend.models.forms;
 
 import java.util.List;
 
-import com.devroods.cestao_backend.models.LastSingleSoldItem;
-
 public class SearchItemsDTO {
 
   private String query;
-  private List<LastSingleSoldItem> soldItems;
+  private List<BusinessDTO> soldItemByBusiness;
 
-  public SearchItemsDTO(String query, List<LastSingleSoldItem> soldItems) {
-    this.soldItems = soldItems;
+  public SearchItemsDTO (){}
+
+  public SearchItemsDTO(String query, List<BusinessDTO> soldItemByBusiness) {
     this.query = query;
+    this.soldItemByBusiness = soldItemByBusiness;
   }
 
   public String getQuery() {
@@ -22,16 +22,16 @@ public class SearchItemsDTO {
     this.query = query;
   }
 
-  public List<LastSingleSoldItem> getSoldItems() {
-    return soldItems;
+  public List<BusinessDTO> getSoldItemByBusiness() {
+    return soldItemByBusiness;
   }
 
-  public void setSoldItems(List<LastSingleSoldItem> soldItems) {
-    this.soldItems = soldItems;
+  public void setSoldItemByBusiness(List<BusinessDTO> soldItemByBusiness) {
+    this.soldItemByBusiness = soldItemByBusiness;
   }
 
   @Override
   public String toString() {
-    return "SearchItemsForm [query=" + query + ", soldItems=" + soldItems + "]";
+    return "SearchItemsDTO [query=" + query + ", soldItemByBusiness=" + soldItemByBusiness + "]";
   }
 }
