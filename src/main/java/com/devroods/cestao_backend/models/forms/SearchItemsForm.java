@@ -2,14 +2,14 @@ package com.devroods.cestao_backend.models.forms;
 
 import java.util.List;
 
-import com.devroods.cestao_backend.models.SoldItem;
+import com.devroods.cestao_backend.models.LastSingleSoldItem;
 
 public class SearchItemsForm {
 
   private String query;
-  private List<SoldItem> soldItems;
+  private List<LastSingleSoldItem> soldItems;
 
-  public SearchItemsForm(String query, List<SoldItem> soldItems) {
+  public SearchItemsForm(String query, List<LastSingleSoldItem> soldItems) {
     this.soldItems = soldItems;
     this.query = query;
   }
@@ -22,11 +22,11 @@ public class SearchItemsForm {
     this.query = query;
   }
 
-  public List<SoldItem> getSoldItems() {
+  public List<LastSingleSoldItem> getSoldItems() {
     return soldItems;
   }
 
-  public void setSoldItems(List<SoldItem> soldItems) {
+  public void setSoldItems(List<LastSingleSoldItem> soldItems) {
     this.soldItems = soldItems;
   }
 

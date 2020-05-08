@@ -1,14 +1,20 @@
 package com.devroods.cestao_backend.components;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
+import com.devroods.cestao_backend.models.LastSingleSoldItem;
 import com.devroods.cestao_backend.models.Nfce;
 import com.devroods.cestao_backend.models.SoldItem;
 import com.devroods.cestao_backend.models.forms.NfceForm;
 import com.devroods.cestao_backend.models.users.Business;
 import com.devroods.cestao_backend.models.users.Person;
 import com.devroods.cestao_backend.repositories.BusinessRepository;
+import com.devroods.cestao_backend.repositories.LastSingleSoldItemRepository;
 import com.devroods.cestao_backend.repositories.NfceRepository;
 import com.devroods.cestao_backend.repositories.PersonRepository;
 import com.devroods.cestao_backend.repositories.SoldItemRepository;
@@ -23,27 +29,29 @@ public class NfceFormInfoExtractComponent {
   private final BusinessRepository businessRepository;
   private final NfceRepository nfceRepository;
   private final SoldItemRepository soldItemRepository;
+  private final LastSingleSoldItemRepository lastSingleSoldItemRepository;
 
   private final GetNFCeService getNFCeService;
 
   public NfceFormInfoExtractComponent(PersonRepository personRepository, BusinessRepository businessRepository,
       NfceRepository nfceRepository, SoldItemRepository soldItemRepository,
-
-      GetNFCeService getNFCeService) {
+      LastSingleSoldItemRepository lastSingleSoldItemRepository, GetNFCeService getNFCeService) {
     this.personRepository = personRepository;
     this.businessRepository = businessRepository;
     this.nfceRepository = nfceRepository;
     this.soldItemRepository = soldItemRepository;
+    this.lastSingleSoldItemRepository = lastSingleSoldItemRepository;
 
     this.getNFCeService = getNFCeService;
   }
 
   public boolean fetch(String key) {
 
-    if(nfceRepository.existsByKey(key)) return false;
+    if (nfceRepository.existsByKey(key))
+      return false;
 
-    // NfceForm nfceForm = getNFCeService.getNfceForm(key).orElseThrow();
-    NfceForm nfceForm = getNFCeService.getDefaultNfceForm().orElseThrow();
+    NfceForm nfceForm = getNFCeService.getNfceForm(key).orElseThrow();
+    //NfceForm nfceForm = getNFCeService.getDefaultNfceForm().orElseThrow();
 
     Nfce nfce = nfceForm.getNfce();
     Person pF = this.verifyAndSavePerson(nfceForm.getPerson());
@@ -58,14 +66,15 @@ public class NfceFormInfoExtractComponent {
       List<SoldItem> soldItems = nfceForm.getSoldItems();
       soldItems.stream().forEach(soldItem -> {
         soldItem.setNfce(nfceF);
-        soldItem = this.verifyExistsItemToSoldItemAndSave(soldItem);
+        soldItem = this.verifyExistsLastSoldToSoldItemAndSave(soldItem);
+        this.verifyAndSaveLastSingleSoldItem(soldItem);
       });
 
       return true;
     } catch (Exception ex) {
       System.out.println(ex.getMessage());
     }
-    
+
     return false;
   }
 
@@ -81,19 +90,56 @@ public class NfceFormInfoExtractComponent {
   public Nfce verifyAndSaveNfce(Nfce nfce) throws Exception {
 
     if (nfceRepository.existsByKey(nfce.getKey()))
-      throw new Exception("Nfce já existe! Key: "+ nfce.getKey());
+      throw new Exception("Nfce já existe! Key: " + nfce.getKey());
 
     return nfceRepository.save(nfce);
   }
 
-  public SoldItem verifyExistsItemToSoldItemAndSave(SoldItem soldItem) {
-    Optional<SoldItem> soldItemOld = soldItemRepository.findFirstByResume(soldItem.getResume());
+  public SoldItem verifyExistsLastSoldToSoldItemAndSave(SoldItem soldItem) {
+    // Optional<SoldItem> soldItemOld =
+    // soldItemRepository.findFirstByResume(soldItem.getResume());
 
-    if (soldItemOld.isPresent()) {
-      soldItem.setItem(soldItemOld.get().getItem());
-    }
+    // if (soldItemOld.isPresent()) {
+    // soldItem.setItem(soldItemOld.get().getItem());
+    // }
 
     return soldItemRepository.save(soldItem);
+  }
+
+  public Optional<LastSingleSoldItem> verifyAndSaveLastSingleSoldItem(SoldItem soldItem){
+    Optional<LastSingleSoldItem> lastSingleSoldItem = lastSingleSoldItemRepository
+      .findByResumeAndBusiness(soldItem.getResume(), soldItem.getNfce().getBusiness());
+
+    if(lastSingleSoldItem.isPresent()){
+      LastSingleSoldItem lastSingle = lastSingleSoldItem.get();
+
+      DateTimeFormatter format = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+      LocalDateTime dateTimeOld = LocalDateTime.parse(lastSingle.getDateTime(), format);
+      LocalDateTime dateTimeNew = LocalDateTime.parse(soldItem.getNfce().getIssueDate(), format);
+      
+      Period period = Period.between(dateTimeOld.toLocalDate(), dateTimeNew.toLocalDate());
+      if (period.isNegative())
+        return Optional.ofNullable(null);
+      else if(period.isZero()) {
+        Duration duration = Duration.between(dateTimeOld.toLocalTime(), dateTimeNew.toLocalTime());
+        if (duration.isNegative() || duration.isZero())
+          return Optional.ofNullable(null);
+      }
+
+      lastSingle.setDateTime(soldItem.getNfce().getIssueDate());
+      lastSingle.setPrice(soldItem.getPrice());
+
+      return Optional.of(lastSingleSoldItemRepository.save(lastSingle));
+    }
+
+    return Optional.of(lastSingleSoldItemRepository.save(
+      new LastSingleSoldItem(0,
+      soldItem.getResume(),
+      soldItem.getPrice(),
+      soldItem.getUnitType(),
+      soldItem.getNfce().getIssueDate(),
+      soldItem.getNfce().getBusiness())
+    ));
   }
 
 }

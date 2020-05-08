@@ -31,14 +31,11 @@ public class SoldItem {
   @ManyToOne
   @JsonIgnore
   private Nfce nfce;
-  @ManyToOne
-  @JsonIgnore
-  private Item item;
 
   public SoldItem(){}
 
   public SoldItem(long id, @NotBlank String resume, @NotBlank double price, @NotBlank double totalPrice,
-      @NotBlank double amount, @NotBlank String unitType, Nfce nfce, Item item) {
+      @NotBlank double amount, @NotBlank String unitType, Nfce nfce) {
     this.id = id;
     this.resume = resume;
     this.price = price;
@@ -46,7 +43,6 @@ public class SoldItem {
     this.amount = amount;
     this.unitType = unitType;
     this.nfce = nfce;
-    this.item = item;
   }
 
   public long getId() {
@@ -105,17 +101,9 @@ public class SoldItem {
     this.nfce = nfce;
   }
 
-  public Item getItem() {
-    return item;
-  }
-
-  public void setItem(Item item) {
-    this.item = item;
-  }
-
   @Override
   public String toString() {
-    return "SoldItem [amount=" + amount + ", id=" + id + ", item=" + item + ", nfce=" + nfce + ", price=" + price
+    return "SoldItem [amount=" + amount + ", id=" + id + ", nfce=" + nfce + ", price=" + price
         + ", resume=" + resume + ", totalPrice=" + totalPrice + ", unitType=" + unitType + "]";
   }
 }

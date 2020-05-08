@@ -2,7 +2,6 @@ package com.devroods.cestao_backend.models;
 
 import java.util.List;
 
-import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -13,7 +12,6 @@ import javax.validation.constraints.Size;
 
 import com.devroods.cestao_backend.models.users.Business;
 
-@Entity
 public class Item {
   
   @Id
