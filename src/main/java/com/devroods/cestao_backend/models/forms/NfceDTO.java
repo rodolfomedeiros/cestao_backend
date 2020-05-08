@@ -13,6 +13,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class NfceDTO {
 
+  public static final String DATE_FORMAT = "dd/MM/yyyy HH:mm:ss";
+
   private String emitente;
   private String cnpjEmitente;
   private String endEmitente;

@@ -25,8 +25,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class NfceFormInfoExtractComponent {
 
-  private static final String DATE_FORMAT = "dd/MM/yyyy HH:mm:ss";
-
   private final PersonRepository personRepository;
   private final BusinessRepository businessRepository;
   private final NfceRepository nfceRepository;
@@ -115,7 +113,7 @@ public class NfceFormInfoExtractComponent {
     if(lastSingleSoldItem.isPresent()){
       LastSingleSoldItem lastSingle = lastSingleSoldItem.get();
 
-      DateTimeFormatter format = DateTimeFormatter.ofPattern(this.DATE_FORMAT);
+      DateTimeFormatter format = DateTimeFormatter.ofPattern(NfceDTO.DATE_FORMAT);
       LocalDateTime dateTimeOld = LocalDateTime.parse(lastSingle.getDateTime(), format);
       LocalDateTime dateTimeNew = LocalDateTime.parse(soldItem.getNfce().getIssueDate(), format);
       
