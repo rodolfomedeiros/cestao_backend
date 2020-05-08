@@ -4,12 +4,12 @@ import java.util.List;
 
 import com.devroods.cestao_backend.models.LastSingleSoldItem;
 
-public class SearchItemsForm {
+public class SearchItemsDTO {
 
   private String query;
   private List<LastSingleSoldItem> soldItems;
 
-  public SearchItemsForm(String query, List<LastSingleSoldItem> soldItems) {
+  public SearchItemsDTO(String query, List<LastSingleSoldItem> soldItems) {
     this.soldItems = soldItems;
     this.query = query;
   }

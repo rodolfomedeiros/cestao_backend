@@ -11,7 +11,7 @@ import com.devroods.cestao_backend.models.users.Person;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class NfceForm {
+public class NfceDTO {
 
   private String emitente;
   private String cnpjEmitente;
@@ -86,7 +86,7 @@ public class NfceForm {
     return soldItems;
   }
 
-  public NfceForm(String emitente, String cnpjEmitente, String endEmitente, String ieEmitente, String cpfDestinatario,
+  public NfceDTO(String emitente, String cnpjEmitente, String endEmitente, String ieEmitente, String cpfDestinatario,
       String destinatario, String endDestinatario, String valorTotal, String valorDesconto, String valorPago,
       String formaPag, String[][] items, String chave, String dataEmissao, String dataAutorizacao, String protocolo,
       String situacao) {

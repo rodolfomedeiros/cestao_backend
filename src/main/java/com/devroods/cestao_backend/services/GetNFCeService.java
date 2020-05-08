@@ -4,7 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.Optional;
 
-import com.devroods.cestao_backend.models.forms.NfceForm;
+import com.devroods.cestao_backend.models.forms.NfceDTO;
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 
@@ -23,15 +23,15 @@ public class GetNFCeService {
     this.restTemplate = restTemplateBuilder.build();
   }
 
-  public Optional<NfceForm> getNfceForm(String nfceKey) {
-    return Optional.ofNullable(restTemplate.getForObject(urlNotaFiscal + nfceKey, NfceForm.class));
+  public Optional<NfceDTO> getNfceForm(String nfceKey) {
+    return Optional.ofNullable(restTemplate.getForObject(urlNotaFiscal + nfceKey, NfceDTO.class));
   }
 
-  public Optional<NfceForm> getDefaultNfceForm() {
+  public Optional<NfceDTO> getDefaultNfceForm() {
     try {
       JsonReader reader = new JsonReader(new FileReader("./src/main/resources/defaultNfceForm.json"));
-      NfceForm nfceForm = new Gson().fromJson(reader, NfceForm.class);
-      return Optional.ofNullable(nfceForm);
+      NfceDTO nfceDTO = new Gson().fromJson(reader, NfceDTO.class);
+      return Optional.ofNullable(nfceDTO);
     } catch (FileNotFoundException e) {
       e.printStackTrace();
       return Optional.ofNullable(null);

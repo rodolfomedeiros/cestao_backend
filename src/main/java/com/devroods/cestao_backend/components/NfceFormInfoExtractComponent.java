@@ -10,7 +10,7 @@ import java.util.Optional;
 import com.devroods.cestao_backend.models.LastSingleSoldItem;
 import com.devroods.cestao_backend.models.Nfce;
 import com.devroods.cestao_backend.models.SoldItem;
-import com.devroods.cestao_backend.models.forms.NfceForm;
+import com.devroods.cestao_backend.models.forms.NfceDTO;
 import com.devroods.cestao_backend.models.users.Business;
 import com.devroods.cestao_backend.models.users.Person;
 import com.devroods.cestao_backend.repositories.BusinessRepository;
@@ -24,6 +24,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class NfceFormInfoExtractComponent {
+
+  private static final String DATE_FORMAT = "dd/MM/yyyy HH:mm:ss";
 
   private final PersonRepository personRepository;
   private final BusinessRepository businessRepository;
@@ -50,12 +52,12 @@ public class NfceFormInfoExtractComponent {
     if (nfceRepository.existsByKey(key))
       return false;
 
-    NfceForm nfceForm = getNFCeService.getNfceForm(key).orElseThrow();
+    NfceDTO nfceDTO = getNFCeService.getNfceForm(key).orElseThrow();
     //NfceForm nfceForm = getNFCeService.getDefaultNfceForm().orElseThrow();
 
-    Nfce nfce = nfceForm.getNfce();
-    Person pF = this.verifyAndSavePerson(nfceForm.getPerson());
-    Business bF = this.verifyAndSaveBusiness(nfceForm.getBusiness());
+    Nfce nfce = nfceDTO.getNfce();
+    Person pF = this.verifyAndSavePerson(nfceDTO.getPerson());
+    Business bF = this.verifyAndSaveBusiness(nfceDTO.getBusiness());
 
     nfce.setBusiness(bF);
     nfce.setPerson(pF);
@@ -63,7 +65,7 @@ public class NfceFormInfoExtractComponent {
     try {
       Nfce nfceF = this.verifyAndSaveNfce(nfce);
 
-      List<SoldItem> soldItems = nfceForm.getSoldItems();
+      List<SoldItem> soldItems = nfceDTO.getSoldItems();
       soldItems.stream().forEach(soldItem -> {
         soldItem.setNfce(nfceF);
         soldItem = this.verifyExistsLastSoldToSoldItemAndSave(soldItem);
@@ -113,7 +115,7 @@ public class NfceFormInfoExtractComponent {
     if(lastSingleSoldItem.isPresent()){
       LastSingleSoldItem lastSingle = lastSingleSoldItem.get();
 
-      DateTimeFormatter format = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+      DateTimeFormatter format = DateTimeFormatter.ofPattern(this.DATE_FORMAT);
       LocalDateTime dateTimeOld = LocalDateTime.parse(lastSingle.getDateTime(), format);
       LocalDateTime dateTimeNew = LocalDateTime.parse(soldItem.getNfce().getIssueDate(), format);
       
