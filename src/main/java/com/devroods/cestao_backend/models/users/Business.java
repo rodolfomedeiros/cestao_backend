@@ -20,7 +20,7 @@ public class Business extends User implements Cloneable {
 
   private String stateRegistration;
 
-  @OneToMany
+  @OneToMany(mappedBy = "business")
   private List<LastSingleSoldItem> lastSingleSoldItems;
 
   public Business(){

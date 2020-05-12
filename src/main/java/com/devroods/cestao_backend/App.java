@@ -23,7 +23,7 @@ public class App {
 		SpringApplication.run(App.class, args);
 	}
 
-	@Bean
+	/* @Bean
 	public CommandLineRunner runner() {
 		return args -> {
 			try {
@@ -36,6 +36,6 @@ public class App {
 				e.printStackTrace();
 			}
 		};
-	}
+	} */
 
 }
