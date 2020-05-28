@@ -5,13 +5,13 @@ import java.util.List;
 public class SearchItemsDTO {
 
   private String query;
-  private List<BusinessDTO> soldItemByBusiness;
+  private List<BusinessDTO> soldItemsByBusiness;
 
   public SearchItemsDTO (){}
 
-  public SearchItemsDTO(String query, List<BusinessDTO> soldItemByBusiness) {
+  public SearchItemsDTO(String query, List<BusinessDTO> soldItemsByBusiness) {
     this.query = query;
-    this.soldItemByBusiness = soldItemByBusiness;
+    this.soldItemsByBusiness = soldItemsByBusiness;
   }
 
   public String getQuery() {
@@ -23,15 +23,15 @@ public class SearchItemsDTO {
   }
 
   public List<BusinessDTO> getSoldItemByBusiness() {
-    return soldItemByBusiness;
+    return soldItemsByBusiness;
   }
 
-  public void setSoldItemByBusiness(List<BusinessDTO> soldItemByBusiness) {
-    this.soldItemByBusiness = soldItemByBusiness;
+  public void setSoldItemsByBusiness(List<BusinessDTO> soldItemsByBusiness) {
+    this.soldItemsByBusiness = soldItemsByBusiness;
   }
 
   @Override
   public String toString() {
-    return "SearchItemsDTO [query=" + query + ", soldItemByBusiness=" + soldItemByBusiness + "]";
+    return "SearchItemsDTO [query=" + query + ", soldItemsByBusiness=" + soldItemsByBusiness + "]";
   }
 }

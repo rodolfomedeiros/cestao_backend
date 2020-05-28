@@ -28,6 +28,7 @@ public class LastSingleSoldItem {
   private String dateTime;
 
   @ManyToOne
+  @JsonIgnore
   private Business business;
 
   public LastSingleSoldItem() {

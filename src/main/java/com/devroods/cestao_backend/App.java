@@ -23,19 +23,19 @@ public class App {
 		SpringApplication.run(App.class, args);
 	}
 
-	/* @Bean
-	public CommandLineRunner runner() {
-		return args -> {
-			try {
-				JsonReader reader = new JsonReader(new FileReader("./src/main/resources/keys.json"));
-				String[] strKeys = new Gson().fromJson(reader, String[].class);
-				for (String key : strKeys) {
-					System.out.println("Key: "+key+ "\nStatus: "+nfceFormInfoExtractComponent.fetch(key));
-				}
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			}
-		};
-	} */
+	// @Bean
+	// public CommandLineRunner runner() {
+	// 	return args -> {
+	// 		try {
+	// 			JsonReader reader = new JsonReader(new FileReader("./src/main/resources/keys.json"));
+	// 			String[] strKeys = new Gson().fromJson(reader, String[].class);
+	// 			for (String key : strKeys) {
+	// 				System.out.println("Key: "+key+ "\nStatus: "+nfceFormInfoExtractComponent.fetch(key));
+	// 			}
+	// 		} catch (FileNotFoundException e) {
+	// 			e.printStackTrace();
+	// 		}
+	// 	};
+	// }
 
 }
