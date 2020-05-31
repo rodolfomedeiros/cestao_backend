@@ -3,6 +3,7 @@ package com.devroods.cestao_backend.controllers;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -29,7 +30,7 @@ public class CestaoController {
     @Valid @RequestParam(required = true) String query) {
       
       List<LastSingleSoldItem> lastSingleSoldItems = lastSingleSoldItemRepository
-        .findAllByResumeIsContainingIgnoreCase(query).orElse(null);
+        .findAllByResumeIsContainingIgnoreCase(query).orElse(new ArrayList<LastSingleSoldItem>());
 
       return new SearchItemsFactory(query, lastSingleSoldItems).created();
   }

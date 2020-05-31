@@ -22,7 +22,7 @@ public class SearchItemsFactory {
   }
 
   public SearchItemsDTO created() {
-    if (lastSingleSoldItems == null || lastSingleSoldItems.size() == 0) return new SearchItemsDTO();
+    if (lastSingleSoldItems == null || lastSingleSoldItems.size() == 0) return new SearchItemsDTO(query, new ArrayList<>());
 
     SearchItemsDTO searchItemsDTO = new SearchItemsDTO();
     searchItemsDTO.setQuery(query);
