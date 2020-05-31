@@ -27,7 +27,7 @@ public class App {
 	// public CommandLineRunner runner() {
 	// 	return args -> {
 	// 		try {
-	// 			JsonReader reader = new JsonReader(new FileReader("./src/main/resources/keys.json"));
+	// 			JsonReader reader = new JsonReader(new FileReader(getClass().getResource("/keys.json").getFile()));
 	// 			String[] strKeys = new Gson().fromJson(reader, String[].class);
 	// 			for (String key : strKeys) {
 	// 				System.out.println("Key: "+key+ "\nStatus: "+nfceFormInfoExtractComponent.fetch(key));
