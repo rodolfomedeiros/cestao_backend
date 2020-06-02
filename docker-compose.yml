@@ -1,7 +1,16 @@
 version: '3'
 
+networks:
+  default:
+    external:
+      name: cestao
+
 services:
-  wsl-pg:
+  backend:
+    build: .
+    ports:
+      - "8080:8080"
+  postgres:
     image: postgres
     environment:
       POSTGRES_PASSWORD: "123"
@@ -9,10 +18,8 @@ services:
       - "15432:5432"
     volumes:
       - $HOME/docker/volumes/postgresql:/var/lib/postgresql/data 
-    networks:
-      - cestao
-      
-  wsl-pgadmin4:
+
+  pgadmin:
     image: dpage/pgadmin4
     environment:
       PGADMIN_DEFAULT_EMAIL: "teste@teste.com"
@@ -20,6 +27,4 @@ services:
     ports:
       - "16543:80"
     depends_on:
-      - wsl-pg
-    networks:
-      - cestao
+      - postgres
