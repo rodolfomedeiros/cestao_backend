@@ -13,6 +13,8 @@ services:
   postgres:
     image: postgres
     environment:
+      POSTGRES_DB: "cestaodb"
+      POSTGRES_USER: "postgres"
       POSTGRES_PASSWORD: "123"
     ports:
       - "15432:5432"
