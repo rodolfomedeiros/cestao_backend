@@ -17,7 +17,7 @@ public class GetNFCeService {
 
   private final RestTemplate restTemplate;
 
-  private final String urlNotaFiscal = "http://172.18.0.2:3000/nota?nfceKey=";
+  private final String urlNotaFiscal = "http://nfce-service:3000/nota?nfceKey=";
 
   public GetNFCeService(RestTemplateBuilder restTemplateBuilder) {
     this.restTemplate = restTemplateBuilder.build();

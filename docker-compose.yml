@@ -8,25 +8,24 @@ networks:
 services:
   backend:
     build: .
-    ports:
-      - "8080:8080"
+    ports: 
+      - '8080:8080'
   postgres:
     image: postgres
+    container_name: cestao_postgres
     environment:
-      POSTGRES_DB: "cestaodb"
-      POSTGRES_USER: "postgres"
-      POSTGRES_PASSWORD: "123"
+      POSTGRES_USER: 'cestao'
+      POSTGRES_PASSWORD: '123'
+      POSTGRES_DB: 'cestaodb'
     ports:
-      - "15432:5432"
-    volumes:
-      - $HOME/docker/volumes/postgresql:/var/lib/postgresql/data 
+      - '15432:5432'
 
   pgadmin:
     image: dpage/pgadmin4
     environment:
-      PGADMIN_DEFAULT_EMAIL: "teste@teste.com"
-      PGADMIN_DEFAULT_PASSWORD: "123"
+      PGADMIN_DEFAULT_EMAIL: 'teste@teste.com'
+      PGADMIN_DEFAULT_PASSWORD: '123'
     ports:
-      - "16543:80"
+      - '16543:80'
     depends_on:
       - postgres
