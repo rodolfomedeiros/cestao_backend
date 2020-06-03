@@ -23,7 +23,7 @@ public class NotaController {
   };
 
   @GetMapping(value = "/{nfceKey}")
-  public ResponseEntity<HttpStatus> getNfce(@PathVariable final String nfceKey, RequestEntity req) {
+  public ResponseEntity<HttpStatus> getNfce(@PathVariable final String nfceKey) {
     
     //System.out.println(req.getHeaders().get("user-agent").toString().contains("Android"));
 

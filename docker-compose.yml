@@ -10,6 +10,8 @@ services:
     build: .
     ports: 
       - '8080:8080'
+    depends_on:
+      - postgres
   postgres:
     image: postgres
     container_name: cestao_postgres
