@@ -6,8 +6,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
+import javax.validation.Valid;
+import javax.validation.constraints.Pattern;
 
 import com.devroods.cestao_backend.components.NfceFormInfoExtractComponent;
+import com.devroods.cestao_backend.models.NfceKey;
 
 @RestController
 @RequestMapping("/nfce")
@@ -15,21 +21,19 @@ public class NotaController {
 
   private final NfceFormInfoExtractComponent nfceFormInfoExtractComponent;
 
-  public NotaController(
-    NfceFormInfoExtractComponent nfceFormInfoExtractComponent
-  ){
+  public NotaController(NfceFormInfoExtractComponent nfceFormInfoExtractComponent) {
     this.nfceFormInfoExtractComponent = nfceFormInfoExtractComponent;
   };
 
-  @GetMapping(value = "/{nfceKey}")
-  public ResponseEntity<HttpStatus> getNfce(@PathVariable final String nfceKey) {
+  @PostMapping(value = "/store")
+  public ResponseEntity<HttpStatus> getNfce(@Valid @RequestBody NfceKey nfceKey) {
     
-    //System.out.println(req.getHeaders().get("user-agent").toString().contains("Android"));
+    // System.out.println(req.getHeaders().get("user-agent").toString().contains("Android"));
 
-    if(nfceFormInfoExtractComponent.fetch(nfceKey)){
+    if (nfceFormInfoExtractComponent.fetch(nfceKey.getNfceKey())) {
       return ResponseEntity.ok(HttpStatus.CREATED);
     }
-    
+
     return ResponseEntity.ok(HttpStatus.CONFLICT);
   }
 

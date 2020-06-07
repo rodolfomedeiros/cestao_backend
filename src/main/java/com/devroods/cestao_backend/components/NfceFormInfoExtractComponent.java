@@ -53,6 +53,8 @@ public class NfceFormInfoExtractComponent {
     NfceDTO nfceDTO = getNFCeService.getNfceForm(key).orElseThrow();
     //NfceForm nfceForm = getNFCeService.getDefaultNfceForm().orElseThrow();
 
+    
+
     Nfce nfce = nfceDTO.getNfce();
     Person pF = this.verifyAndSavePerson(nfceDTO.getPerson());
     Business bF = this.verifyAndSaveBusiness(nfceDTO.getBusiness());
