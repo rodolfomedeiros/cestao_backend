@@ -2,6 +2,8 @@ package com.devroods.cestao_backend.services;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
+import java.net.UnknownHostException;
 import java.util.Optional;
 
 import com.devroods.cestao_backend.models.forms.NfceDTO;
@@ -23,8 +25,8 @@ public class GetNFCeService {
     this.restTemplate = restTemplateBuilder.build();
   }
 
-  public Optional<NfceDTO> getNfceForm(String nfceKey) {
-    return Optional.ofNullable(restTemplate.getForObject(urlNotaFiscal + nfceKey, NfceDTO.class));
+  public Optional<NfceDTO> getNfceForm(String nfceKey) throws UnknownHostException {
+      return Optional.ofNullable(restTemplate.getForObject(urlNotaFiscal + nfceKey, NfceDTO.class));
   }
 
   public Optional<NfceDTO> getDefaultNfceForm() {

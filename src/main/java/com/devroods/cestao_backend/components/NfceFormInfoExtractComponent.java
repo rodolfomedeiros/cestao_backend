@@ -1,5 +1,7 @@
 package com.devroods.cestao_backend.components;
 
+import java.io.IOException;
+import java.net.UnknownHostException;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.Period;
@@ -11,6 +13,7 @@ import com.devroods.cestao_backend.models.LastSingleSoldItem;
 import com.devroods.cestao_backend.models.Nfce;
 import com.devroods.cestao_backend.models.SoldItem;
 import com.devroods.cestao_backend.models.forms.NfceDTO;
+import com.devroods.cestao_backend.models.forms.NfceDTOEnum;
 import com.devroods.cestao_backend.models.users.Business;
 import com.devroods.cestao_backend.models.users.Person;
 import com.devroods.cestao_backend.repositories.BusinessRepository;
@@ -45,15 +48,19 @@ public class NfceFormInfoExtractComponent {
     this.getNFCeService = getNFCeService;
   }
 
-  public boolean fetch(String key) {
+  public NfceDTOEnum fetch(String key) {
+
+    NfceDTO nfceDTO;
 
     if (nfceRepository.existsByKey(key))
-      return false;
+      return NfceDTOEnum.CONFLICT;
 
-    NfceDTO nfceDTO = getNFCeService.getNfceForm(key).orElseThrow();
-    //NfceForm nfceForm = getNFCeService.getDefaultNfceForm().orElseThrow();
-
-    
+    try {
+      nfceDTO = getNFCeService.getNfceForm(key).get();
+    } catch (UnknownHostException e) {
+      System.out.println("error");
+      return NfceDTOEnum.SERVER_NOT_FOUND;
+    }
 
     Nfce nfce = nfceDTO.getNfce();
     Person pF = this.verifyAndSavePerson(nfceDTO.getPerson());
@@ -72,12 +79,12 @@ public class NfceFormInfoExtractComponent {
         this.verifyAndSaveLastSingleSoldItem(soldItem);
       });
 
-      return true;
+      return NfceDTOEnum.CREATED;
     } catch (Exception ex) {
       System.out.println(ex.getMessage());
     }
 
-    return false;
+    return NfceDTOEnum.NFCE_FAIL;
   }
 
   public Person verifyAndSavePerson(Person person) {

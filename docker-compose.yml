@@ -6,17 +6,17 @@ networks:
       name: cestao
 
 services:
-  backend:
-    build: .
-    ports: 
-      - '8080:8080'
-    environment:
-      POSTGRES_HOST: 'cestao_postgres'
-      POSTGRES_USER: 'cestao'
-      POSTGRES_PASSWORD: '123'
-      POSTGRES_DB: 'cestaodb'
-    depends_on:
-      - postgres
+  # backend:
+  #   build: .
+  #   ports: 
+  #     - '8080:8080'
+  #   environment:
+  #     POSTGRES_HOST: 'cestao_postgres'
+  #     POSTGRES_USER: 'cestao'
+  #     POSTGRES_PASSWORD: '123'
+  #     POSTGRES_DB: 'cestaodb'
+  #   depends_on:
+  #     - postgres
   postgres:
     image: postgres
     container_name: cestao_postgres
