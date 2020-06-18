@@ -1,6 +1,5 @@
 package com.devroods.cestao_backend.components;
 
-import java.io.IOException;
 import java.net.UnknownHostException;
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -9,6 +8,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
+import com.devroods.cestao_backend.exceptions.NfceServerNotFoundException;
 import com.devroods.cestao_backend.models.LastSingleSoldItem;
 import com.devroods.cestao_backend.models.Nfce;
 import com.devroods.cestao_backend.models.SoldItem;
@@ -57,8 +57,8 @@ public class NfceFormInfoExtractComponent {
 
     try {
       nfceDTO = getNFCeService.getNfceForm(key).get();
-    } catch (UnknownHostException e) {
-      System.out.println("error");
+    } catch (NfceServerNotFoundException e) {
+      System.out.println(e.getMessage());
       return NfceDTOEnum.SERVER_NOT_FOUND;
     }
 
