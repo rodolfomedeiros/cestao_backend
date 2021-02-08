@@ -2,8 +2,6 @@ package com.devroods.cestao_backend.services;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.IOException;
-import java.net.UnknownHostException;
 import java.util.Optional;
 
 import com.devroods.cestao_backend.exceptions.NfceServerNotFoundException;

@@ -1,6 +1,6 @@
-FROM adoptopenjdk/openjdk11:alpine
+FROM adoptopenjdk/openjdk15:alpine
 
-ARG JAR_FILE=target/*.jar
+ARG JAR_FILE=build/libs/*.jar
 
 COPY ${JAR_FILE} app.jar
 
