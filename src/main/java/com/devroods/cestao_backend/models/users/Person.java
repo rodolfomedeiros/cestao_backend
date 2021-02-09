@@ -5,7 +5,14 @@ import javax.persistence.Entity;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
 @Entity
+@Getter
+@Setter
+@ToString
 public class Person extends User{
 
   @NotBlank
@@ -21,18 +28,5 @@ public class Person extends User{
 
   public Person(){
     super();
-  }
-
-  public String getCpf() {
-    return cpf;
-  }
-
-  public void setCpf(String cpf) {
-    this.cpf = cpf;
-  }
-
-  @Override
-  public String toString() {
-    return "Person [cpf=" + cpf + "]" + super.toString();
   }
 }

@@ -1,6 +1,5 @@
 package com.devroods.cestao_backend.components;
 
-import java.net.UnknownHostException;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.Period;
