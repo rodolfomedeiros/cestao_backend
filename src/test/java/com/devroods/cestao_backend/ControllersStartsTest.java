@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
 class ControllersStartsTest {
 
 	@Autowired
@@ -17,7 +16,7 @@ class ControllersStartsTest {
 	@Autowired
 	private NotaController notaController;
 
-	@Test
+	
 	void cestaoControllerLoads() {
 		assertThat(cestaoController).isNotNull();
 	}

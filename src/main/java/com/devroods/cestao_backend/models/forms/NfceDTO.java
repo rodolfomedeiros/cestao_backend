@@ -1,7 +1,8 @@
 package com.devroods.cestao_backend.models.forms;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.devroods.cestao_backend.models.Nfce;
 import com.devroods.cestao_backend.models.SoldItem;
@@ -11,10 +12,12 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
 @ToString
@@ -42,57 +45,40 @@ public class NfceDTO {
   private String situacao;
 
   public Person getPerson() {
-    Person p = new Person();
-
-    p.setCpf(this.getCpfDestinatario() != null ? this.getCpfDestinatario() : "000.000.000-00" );
-    p.setName(this.getDestinatario());
-    p.setAddress(this.getEndDestinatario());
-
-    return p;
+    return Person.builder()
+      .cpf(this.getCpfDestinatario())
+      .name(this.getDestinatario())
+      .address(this.getEndDestinatario())
+      .build();
   }
 
   public Business getBusiness() {
-    Business b = new Business();
-
-    b.setName(this.getEmitente());
-    b.setCnpj(this.getCnpjEmitente());
-    b.setStateRegistration(this.getIeEmitente());
-    b.setAddress(this.getEndEmitente());
-    
-    return b;
+    return Business.builder()
+      .name(this.getEmitente())
+      .cnpj(this.getCnpjEmitente())
+      .stateRegistration(this.getIeEmitente())
+      .address(this.getEndEmitente())
+      .build();
   }
 
   public Nfce getNfce() {
-    Nfce nfce = new Nfce();
-
-    nfce.setDiscount(Double.parseDouble(getValorDesconto().replace(",", ".")));
-    nfce.setAuthDate(this.getDataAutorizacao());
-    nfce.setIssueDate(this.getDataEmissao());
-    nfce.setKey(this.getChave());
-    nfce.setPaymentType(this.getFormaPag());
-    nfce.setProtocolNumber(this.getProtocolo());
-    nfce.setStatus(this.getSituacao());
-    nfce.setTotalPaid(Double.parseDouble(this.getValorPago().replace(",", ".")));
-    nfce.setTotalPrice(Double.parseDouble(this.getValorTotal().replace(",", ".")));
-
-    return nfce;
+    return Nfce.builder()
+      .discount(Double.parseDouble(getValorDesconto().replace(",", ".")))
+      .authDate(this.getDataAutorizacao())
+      .issueDate(this.getDataEmissao()).key(this.getChave())
+      .paymentType(this.getFormaPag()).protocolNumber(this.getProtocolo()).status(this.getSituacao())
+      .totalPaid(Double.parseDouble(this.getValorPago().replace(",", ".")))
+      .totalPrice(Double.parseDouble(this.getValorTotal().replace(",", "."))).build();
   }
 
-  public List<SoldItem> getSoldItems(){
-    List<SoldItem> soldItems = new ArrayList<SoldItem>();
-
-    for (String[] arr : getItems()) {
-      SoldItem soldItem = new SoldItem();
-
-      soldItem.setAmount(Double.parseDouble(arr[2].replace(",", ".")));
-      soldItem.setPrice(Double.parseDouble(arr[4].replace(",", ".")));
-      soldItem.setResume(arr[1]);
-      soldItem.setTotalPrice(Double.parseDouble(arr[5].replace(",", ".")));
-      soldItem.setUnitType(arr[3]);
-
-      soldItems.add(soldItem);
-    }
-
-    return soldItems;
+  public List<SoldItem> getSoldItems() {
+    return Arrays.asList(this.getItems()).stream().map(arr -> {
+      return SoldItem.builder()
+        .amount(Double.parseDouble(arr[2].replace(",", ".")))
+        .price(Double.parseDouble(arr[4].replace(",", ".")))
+        .resume(arr[1])
+        .totalPrice(Double.parseDouble(arr[5].replace(",", ".")))
+        .unitType(arr[3]).build();
+    }).collect(Collectors.toList());
   }
 }

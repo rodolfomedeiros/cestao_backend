@@ -10,6 +10,7 @@ import javax.validation.constraints.Size;
 
 import com.devroods.cestao_backend.models.LastSingleSoldItem;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -30,10 +31,7 @@ public class Business extends User implements Cloneable {
   @OneToMany(mappedBy = "business")
   private List<LastSingleSoldItem> lastSingleSoldItems;
 
-  public Business(){
-    super();
-  }
-
+  @Builder
   public Business(int id, String name, String address, String fone, String email, String password,
       @NotBlank @Size(min = 18, max = 18) String cnpj, String stateRegistration,
       List<LastSingleSoldItem> lastSingleSoldItems) {
@@ -49,5 +47,9 @@ public class Business extends User implements Cloneable {
     this.cnpj = cnpj;
     this.stateRegistration = stateRegistration;
     this.lastSingleSoldItems = lastSingleSoldItems;
+  }
+
+  public Business(){
+    super();
   }
 }
