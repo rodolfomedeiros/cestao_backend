@@ -63,6 +63,9 @@ public class NfceDTO {
 
   public Nfce getNfce() {
     return Nfce.builder()
+      .key(this.chave)
+      .protocolNumber(this.protocolo)
+      .status(this.getSituacao())
       .discount(Double.parseDouble(getValorDesconto().replace(",", ".")))
       .authDate(this.getDataAutorizacao())
       .issueDate(this.getDataEmissao()).key(this.getChave())

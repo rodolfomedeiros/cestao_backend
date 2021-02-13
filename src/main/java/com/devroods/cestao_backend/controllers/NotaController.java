@@ -25,20 +25,15 @@ public class NotaController {
   @PostMapping(value = "/store")
   public ResponseEntity<HttpStatus> getNfce(@Valid @RequestBody NfceKey nfceKey) {
     
-    // System.out.println(req.getHeaders().get("user-agent").toString().contains("Android"));
+    //System.out.println(req.getHeaders().get("user-agent").toString().contains("Android"));
 
-    switch (nfceFormInfoExtractComponent.fetch(nfceKey.getNfceKey())) {
-      case CREATED:
-        return ResponseEntity.ok(HttpStatus.OK);
-      case CONFLICT:
-        return ResponseEntity.ok(HttpStatus.CONFLICT);
-      case SERVER_NOT_FOUND:
-        return ResponseEntity.ok(HttpStatus.SERVICE_UNAVAILABLE);
-      case NFCE_FAIL:
-        return ResponseEntity.ok(HttpStatus.INTERNAL_SERVER_ERROR);
+    try{
+      nfceFormInfoExtractComponent.fetch(nfceKey);
+    } catch (Exception e){
+      System.out.println(e.getMessage());
     }
 
-    return ResponseEntity.ok(HttpStatus.INTERNAL_SERVER_ERROR);
+    return ResponseEntity.ok(HttpStatus.OK);
   }
 
 }

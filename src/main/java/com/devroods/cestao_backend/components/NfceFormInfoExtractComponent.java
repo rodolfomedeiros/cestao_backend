@@ -7,9 +7,11 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
+import com.devroods.cestao_backend.exceptions.NfceKeyConflictDBException;
 import com.devroods.cestao_backend.exceptions.NfceServerNotFoundException;
 import com.devroods.cestao_backend.models.LastSingleSoldItem;
 import com.devroods.cestao_backend.models.Nfce;
+import com.devroods.cestao_backend.models.NfceKey;
 import com.devroods.cestao_backend.models.SoldItem;
 import com.devroods.cestao_backend.models.forms.NfceDTO;
 import com.devroods.cestao_backend.models.forms.NfceDTOEnum;
@@ -23,6 +25,8 @@ import com.devroods.cestao_backend.repositories.SoldItemRepository;
 import com.devroods.cestao_backend.services.GetNFCeService;
 
 import org.springframework.stereotype.Component;
+
+import net.bytebuddy.implementation.bytecode.Throw;
 
 @Component
 public class NfceFormInfoExtractComponent {
@@ -47,20 +51,15 @@ public class NfceFormInfoExtractComponent {
     this.getNFCeService = getNFCeService;
   }
 
-  public NfceDTOEnum fetch(String key) {
+  public boolean fetch(NfceKey key) throws Exception {
 
     NfceDTO nfceDTO;
 
-    if (nfceRepository.existsByKey(key))
-      return NfceDTOEnum.CONFLICT;
+    if (nfceRepository.existsByKey(key.getNfceKey()))
+      throw new NfceKeyConflictDBException(key.getNfceKey());
 
-    try {
-      nfceDTO = getNFCeService.getNfceForm(key).get();
-    } catch (NfceServerNotFoundException e) {
-      System.out.println(e.getMessage());
-      return NfceDTOEnum.SERVER_NOT_FOUND;
-    }
-
+    nfceDTO = getNFCeService.getNfceForm(key.getNfceKey()).get();
+   
     Nfce nfce = nfceDTO.getNfce();
     Person pF = this.verifyAndSavePerson(nfceDTO.getPerson());
     Business bF = this.verifyAndSaveBusiness(nfceDTO.getBusiness());
@@ -68,22 +67,16 @@ public class NfceFormInfoExtractComponent {
     nfce.setBusiness(bF);
     nfce.setPerson(pF);
 
-    try {
-      Nfce nfceF = this.verifyAndSaveNfce(nfce);
+    Nfce nfceF = this.verifyAndSaveNfce(nfce);
 
-      List<SoldItem> soldItems = nfceDTO.getSoldItems();
-      soldItems.stream().forEach(soldItem -> {
-        soldItem.setNfce(nfceF);
-        soldItem = this.verifyExistsLastSoldToSoldItemAndSave(soldItem);
-        this.verifyAndSaveLastSingleSoldItem(soldItem);
-      });
+    List<SoldItem> soldItems = nfceDTO.getSoldItems();
+    soldItems.stream().forEach(soldItem -> {
+      soldItem.setNfce(nfceF);
+      soldItem = this.verifyExistsLastSoldToSoldItemAndSave(soldItem);
+      this.verifyAndSaveLastSingleSoldItem(soldItem);
+    });
 
-      return NfceDTOEnum.CREATED;
-    } catch (Exception ex) {
-      System.out.println(ex.getMessage());
-    }
-
-    return NfceDTOEnum.NFCE_FAIL;
+    return true;
   }
 
   public Person verifyAndSavePerson(Person person) {
@@ -98,7 +91,7 @@ public class NfceFormInfoExtractComponent {
   public Nfce verifyAndSaveNfce(Nfce nfce) throws Exception {
 
     if (nfceRepository.existsByKey(nfce.getKey()))
-      throw new Exception("Nfce já existe! Key: " + nfce.getKey());
+      throw new NfceKeyConflictDBException(nfce.getKey());
 
     return nfceRepository.save(nfce);
   }
